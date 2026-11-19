@@ -50,7 +50,7 @@ footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-s
 </main>
 <footer><div class="wrap">© <span id="year"></span> DART'z GAMES · Bagikan game dengan bijak dan pastikan lu punya hak untuk mendistribusikannya.</div></footer>
 
-<div class="modal hidden" id="loginModal"><div class="dialog"><h2>Admin Login</h2><p class="muted">Masuk untuk mengelola katalog DART'z GAMES.</p><form id="loginForm"><div class="field"><label>Email admin</label><input name="email" type="email" required autocomplete="username"></div><div class="field"><label>Password</label><input name="password" type="password" required autocomplete="current-password"></div><button type="submit" id="loginSubmit">Login</button> <button type="button" class="secondary" id="closeLogin">Batal</button></form><div class="status hidden" id="loginStatus"></div></div></div>
+<div class="modal hidden" id="loginModal"><div class="dialog"><h2>Admin Login</h2><p class="muted">Masuk menggunakan akun GitHub yang sudah diberi akses admin.</p><button type="button" id="githubLoginBtn" style="width:100%">🐙 Login dengan GitHub</button> <button type="button" class="secondary" id="closeLogin">Batal</button><button type="button" class="secondary hidden" id="githubLogoutBtn" style="margin-top:10px">Keluar dari GitHub</button><div class="status hidden" id="loginStatus"></div></div></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 /* Isi dua nilai ini dari Supabase Project Settings > API. Jangan pernah masukkan service_role key. */
@@ -72,7 +72,26 @@ async function init(){
  db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
  const {data:{session}}=await db.auth.getSession();currentUser=session?.user||null;
  await checkAdmin();await loadGames();
- db.auth.onAuthStateChange(async(_event,session)=>{currentUser=session?.user||null;setTimeout(async()=>{await checkAdmin();await loadGames()},0)});
+ if(currentUser&&!isAdmin){
+  $("loginModal").classList.remove("hidden");
+  $("githubLogoutBtn").classList.remove("hidden");
+  message("loginStatus","Login GitHub berhasil, tetapi akun ini belum terdaftar sebagai admin. Tambahkan User ID akun ini ke tabel public.admins di Supabase.");
+ }
+ db.auth.onAuthStateChange(async(_event,session)=>{
+  currentUser=session?.user||null;
+  setTimeout(async()=>{
+   await checkAdmin();await loadGames();
+   if(currentUser&&!isAdmin){
+    $("loginModal").classList.remove("hidden");
+    $("githubLogoutBtn").classList.remove("hidden");
+    message("loginStatus","Login GitHub berhasil, tetapi akun ini belum terdaftar sebagai admin. Tambahkan User ID akun ini ke tabel public.admins di Supabase.");
+   }else if(isAdmin){
+    $("loginModal").classList.add("hidden");
+    $("githubLogoutBtn").classList.add("hidden");
+    $("adminPanel").scrollIntoView({behavior:"smooth"});
+   }
+  },0)
+ });
 }
 async function checkAdmin(){
  isAdmin=false;
@@ -109,7 +128,28 @@ $("search").addEventListener("input",renderGames);$("searchBtn").onclick=renderG
 $("adminBtn").onclick=()=>{if(isAdmin){$("adminPanel").scrollIntoView({behavior:"smooth"})}else{$("loginModal").classList.remove("hidden");$("loginStatus").classList.add("hidden")}};
 $("closeLogin").onclick=()=>$("loginModal").classList.add("hidden");
 $("loginModal").addEventListener("click",e=>{if(e.target===$("loginModal"))$("loginModal").classList.add("hidden")});
-$("loginForm").onsubmit=async e=>{e.preventDefault();if(!db)return;const f=new FormData(e.target);$("loginSubmit").disabled=true;try{const {error}=await db.auth.signInWithPassword({email:f.get("email"),password:f.get("password")});if(error)throw error;currentUser=(await db.auth.getUser()).data.user;await checkAdmin();if(!isAdmin)throw new Error("Akun ini belum terdaftar sebagai admin.");$("loginModal").classList.add("hidden");$("adminPanel").scrollIntoView({behavior:"smooth"})}catch(err){message("loginStatus",err.message)}finally{$("loginSubmit").disabled=false}};
+$("githubLoginBtn").onclick=async()=>{
+ if(!db)return;
+ const b=$("githubLoginBtn");b.disabled=true;b.textContent="Menghubungkan ke GitHub...";
+ try{
+  const {error}=await db.auth.signInWithOAuth({provider:"github",options:{redirectTo:window.location.origin}});
+  if(error)throw error;
+ }catch(err){
+  message("loginStatus","Login GitHub gagal: "+(err.message||String(err)));
+  b.disabled=false;b.textContent="🐙 Login dengan GitHub";
+ }
+};
+$("githubLogoutBtn").onclick=async()=>{
+ if(!db)return;
+ const {error}=await db.auth.signOut();
+ if(error){message("loginStatus",error.message);return}
+ currentUser=null;isAdmin=false;
+ $("githubLogoutBtn").classList.add("hidden");
+ $("loginStatus").classList.add("hidden");
+ $("adminPanel").classList.add("hidden");
+ $("githubLoginBtn").disabled=false;
+ $("githubLoginBtn").textContent="🐙 Login dengan GitHub";
+};
 $("logoutBtn").onclick=async()=>{await db.auth.signOut();$("adminPanel").classList.add("hidden");await loadGames()};
 async function uploadFile(bucket,file){
  const ext=(file.name.split(".").pop()||"bin").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
