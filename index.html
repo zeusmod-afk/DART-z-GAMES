@@ -4,266 +4,140 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#080d1b">
-<title>DART'z Panel — Game Hub</title>
+<title>DART'z Panel</title>
 <meta name="description" content="DART'z Panel — pusat koleksi dan pengelolaan game.">
 <style>
-:root{--bg:#080d1b;--panel:#111a2d;--panel2:#17233a;--text:#f4f7ff;--muted:#9aa9c2;--blue:#258cff;--red:#ff405d;--line:#263550}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#15264b 0,transparent 40%),var(--bg);color:var(--text);font:15px/1.5 system-ui,Arial,sans-serif}
-button,input,textarea,select{font:inherit}button{cursor:pointer;border:0;border-radius:11px;padding:11px 15px;font-weight:700;background:linear-gradient(110deg,var(--blue),#665cff);color:white}
-button.secondary{background:#25334d}button.danger{background:#a92e45}button:disabled{opacity:.5;cursor:not-allowed}
-.wrap{max-width:1120px;margin:auto;padding:0 18px}.top{position:sticky;top:0;z-index:5;background:#080d1beF;backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-.nav{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:12px}.navleft{display:flex;align-items:center;gap:15px;min-width:0}.brand{font-size:22px;font-weight:950;letter-spacing:.4px;white-space:nowrap}.brand span{color:#ff465f}.navright{display:flex;gap:8px;align-items:center}
-.accountWrap{position:relative}.accountBtn{display:flex;align-items:center;gap:9px;background:#142139;border:1px solid #30415f;padding:6px 11px 6px 7px;max-width:230px;text-align:left}.avatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:#263b5c;display:grid;place-items:center;font-weight:900;flex:none}.accountText{min-width:0;display:flex;flex-direction:column;line-height:1.2}.accountName{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:135px}.accountRole{font-size:10px;color:#8fbaff;margin-top:3px}.accountMenu{position:absolute;top:calc(100% + 9px);left:0;width:220px;padding:8px;background:#111b2e;border:1px solid #344560;border-radius:13px;box-shadow:0 15px 35px #0008;z-index:15}.accountMenu button{width:100%;text-align:left;margin:3px 0;background:#1c2b44;padding:10px 12px}.accountMenu .menuDanger{background:#61283a}
-.hero{padding:46px 0 30px}.heroBox{border:1px solid #30456a;border-radius:22px;padding:clamp(22px,5vw,48px);background:linear-gradient(115deg,#14294b,#17152f 65%,#32182d);position:relative;overflow:hidden}
-.heroBox:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-75px;top:-100px;background:linear-gradient(135deg,#258cff88,#ff405d66);filter:blur(10px)}
-.eyebrow{color:#83bdff;font-weight:800;letter-spacing:2px;font-size:11px}.hero h1{font-size:clamp(32px,7vw,58px);line-height:1.02;margin:12px 0}.hero p{color:#c1cce0;max-width:600px}.searchrow{display:flex;gap:9px;margin-top:22px;max-width:620px}.searchrow input{flex:1}
-input,textarea,select{width:100%;border:1px solid #344560;background:#0c1425;color:var(--text);padding:12px;border-radius:10px;outline:none}input:focus,textarea:focus,select:focus{border-color:#398fff}textarea{min-height:90px;resize:vertical}
-.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:28px 0 14px}.sectionhead h2{margin:0;font-size:23px}.muted{color:var(--muted)}.filters{display:flex;gap:7px;flex-wrap:wrap;margin:15px 0}.chip{background:#18243a;border:1px solid #2a3a57;color:#cbd8ed;padding:7px 12px;border-radius:30px;font-size:13px}.chip.active{background:#1b4b80;border-color:#398fff;color:white}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:15px;margin-bottom:45px}.game{background:linear-gradient(180deg,#152139,#10192b);border:1px solid var(--line);border-radius:17px;overflow:hidden;display:flex;flex-direction:column;min-width:0}.cover{height:145px;background:linear-gradient(135deg,#1c4673,#502342);display:grid;place-items:center;overflow:hidden;color:#dbeaff;font-size:38px}.cover img{width:100%;height:100%;object-fit:cover}.gamebody{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}.gamebody h3{margin:0;font-size:18px}.desc{color:#aab8cf;font-size:13px;min-height:38px;white-space:pre-wrap;overflow-wrap:anywhere}.meta{display:flex;flex-wrap:wrap;gap:6px}.tag{font-size:11px;padding:4px 8px;border-radius:20px;background:#20334e;color:#c9dcfa}.gamefoot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}.gamefoot small{color:var(--muted)}.gamefoot button{padding:9px 12px}
-footer{border-top:1px solid var(--line);padding:22px 0;color:var(--muted);font-size:12px;text-align:center}
-.hidden{display:none!important}.modal{position:fixed;inset:0;z-index:20;background:#020611d9;display:grid;place-items:center;padding:16px;overflow:auto}.dialog{width:min(560px,100%);background:#111b2e;border:1px solid #344560;border-radius:18px;padding:21px;max-height:92vh;overflow:auto}.dialog h2{margin:0 0 14px}.field{margin:12px 0}.field label{display:block;font-size:13px;color:#c3d1e7;margin-bottom:6px}.row{display:flex;gap:10px}.row>*{flex:1}.status{margin:10px 0;padding:10px;border-radius:9px;background:#1b2b43;color:#d9e8ff;font-size:13px;white-space:pre-wrap}.adminPanel{background:#0d1628;border:1px solid var(--line);border-radius:16px;padding:17px;margin:24px 0}.adminGames{display:grid;gap:8px}.adminItem{display:flex;align-items:center;justify-content:space-between;gap:10px;background:#17233a;padding:10px;border-radius:10px}.adminItem span{overflow-wrap:anywhere}.adminItem button{padding:7px 10px;font-size:12px}.empty{padding:35px;text-align:center;border:1px dashed #344560;border-radius:15px;color:var(--muted)}
-@media(max-width:600px){.brand{font-size:18px}.nav{min-height:60px}.navleft{gap:9px}.accountBtn{max-width:155px;padding-right:8px}.accountName{max-width:85px}.accountRole{font-size:9px}.navright button{padding:9px 10px;font-size:12px}.hero{padding-top:24px}.searchrow{flex-direction:column}.row{flex-direction:column}}
-@media(max-width:390px){.brand{font-size:16px}.accountBtn{gap:6px;max-width:132px}.accountName{max-width:68px}.avatar{width:30px;height:30px}}
+:root{color-scheme:dark;--bg:#080d1b;--surface:#101a2d;--surface2:#16233a;--line:#263650;--text:#f4f7ff;--muted:#9aa9c2;--blue:#318cff;--red:#ff5269;--green:#2fd69a;--shadow:0 18px 55px #0005}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 12% -5%,#1b3563 0,transparent 36%),radial-gradient(ellipse at 100% 20%,#32192f 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,textarea,select{font:inherit}button{border:0;border-radius:12px;padding:11px 16px;font-weight:750;color:white;background:linear-gradient(110deg,#258cff,#685dff);cursor:pointer;transition:transform .15s,filter .15s}button:hover{filter:brightness(1.1);transform:translateY(-1px)}button:disabled{opacity:.5;cursor:not-allowed;transform:none}.secondary{background:#243550}.danger{background:#9b3048}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}.top{position:sticky;top:0;z-index:10;background:#080d1beF;border-bottom:1px solid var(--line);backdrop-filter:blur(16px)}.nav{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:14px}.brand{font-size:21px;font-weight:950;letter-spacing:.3px;white-space:nowrap}.brand span{color:var(--red)}.navright{display:flex;align-items:center;gap:10px}.adminState{display:flex;align-items:center;gap:8px;border:1px solid #276b61;background:#10342f;color:#b7ffe6;border-radius:30px;padding:7px 12px;font-size:12px;font-weight:800}.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green)}
+.hero{padding:36px 0 28px}.heroBox{position:relative;overflow:hidden;border:1px solid #344c71;border-radius:24px;padding:clamp(24px,5vw,52px);background:linear-gradient(115deg,#14294b,#17172f 64%,#321b31);box-shadow:var(--shadow)}.heroBox:after{content:"";position:absolute;width:300px;height:300px;border-radius:50%;right:-100px;top:-120px;background:linear-gradient(130deg,#258cff88,#ff405d77);filter:blur(18px);pointer-events:none}.eyebrow{color:#8fc4ff;font-size:11px;font-weight:900;letter-spacing:2px}.hero h1{font-size:clamp(36px,7vw,62px);line-height:1.02;letter-spacing:-2px;margin:12px 0}.hero p{max-width:580px;color:#c2cde0;margin:12px 0 0}.searchrow{display:flex;gap:9px;max-width:630px;margin-top:24px;position:relative;z-index:1}.searchrow input{flex:1;min-width:0}
+input,textarea,select{width:100%;border:1px solid #344762;background:#0b1425;color:var(--text);border-radius:11px;padding:12px 13px;outline:none}input:focus,textarea:focus,select:focus{border-color:#438fff;box-shadow:0 0 0 3px #318cff22}textarea{min-height:88px;resize:vertical}.sectionhead{display:flex;align-items:end;justify-content:space-between;gap:12px;margin:26px 0 14px}.sectionhead h2{margin:3px 0 0;font-size:24px}.muted{color:var(--muted)}#count{font-size:12px}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 18px}.chip{padding:7px 13px;border-radius:30px;background:#17243a;border:1px solid #2b3d59;color:#c9d7eb;font-size:13px}.chip.active{background:#1c4b7d;border-color:#438fff;color:white}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(235px,1fr));gap:16px;margin-bottom:48px}.game{min-width:0;overflow:hidden;display:flex;flex-direction:column;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#152139,#0e1729);box-shadow:0 10px 25px #0002}.cover{height:150px;display:grid;place-items:center;overflow:hidden;background:linear-gradient(135deg,#1c4673,#502342);font-size:42px;color:#dbeaff}.cover img{width:100%;height:100%;object-fit:cover}.gamebody{padding:15px;display:flex;flex-direction:column;gap:9px;flex:1}.gamebody h3{margin:0;font-size:18px;overflow-wrap:anywhere}.desc{font-size:13px;color:#aab8cf;min-height:40px;white-space:pre-wrap;overflow-wrap:anywhere}.meta{display:flex;flex-wrap:wrap;gap:6px}.tag{font-size:11px;padding:4px 8px;border-radius:30px;background:#20334e;color:#c9dcfa}.gamefoot{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:auto}.gamefoot small{color:var(--muted);font-size:12px}.gamefoot button{padding:9px 13px}.empty{padding:34px 18px;text-align:center;border:1px dashed #344762;border-radius:16px;color:var(--muted);grid-column:1/-1;background:#0b142588}
+.adminPanel{margin:26px 0 45px;padding:clamp(16px,3vw,24px);border:1px solid #344762;border-radius:20px;background:linear-gradient(180deg,#111c30,#0d1627);box-shadow:var(--shadow)}.adminTop{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:17px;border-bottom:1px solid var(--line)}.adminTop h2{margin:3px 0 0}.adminGrid{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:18px;margin-top:18px}.adminCard{background:#121f34;border:1px solid #2b3d59;border-radius:16px;padding:17px;min-width:0}.adminCard h3{margin:0 0 13px}.field{margin:12px 0}.field label{display:block;margin-bottom:6px;color:#c3d1e7;font-size:13px;font-weight:650}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.adminGames{display:grid;gap:9px}.adminItem{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:11px;border:1px solid #2a3b56;border-radius:12px;background:#17243a}.adminItem .details{min-width:0;overflow-wrap:anywhere}.adminItem small{color:var(--muted)}.adminItem .actions{display:flex;gap:6px;flex:none}.adminItem button{padding:7px 10px;font-size:12px}
+footer{border-top:1px solid var(--line);padding:23px 0;color:var(--muted);font-size:12px;text-align:center}.hidden{display:none!important}.modal{position:fixed;inset:0;z-index:30;display:grid;place-items:center;padding:18px;background:#020611df;backdrop-filter:blur(8px)}.dialog{width:min(420px,100%);padding:23px;border:1px solid #3a4d6a;border-radius:20px;background:#111b2e;box-shadow:var(--shadow)}.dialog h2{margin:0 0 5px}.dialog p{margin:0 0 17px;font-size:13px}.dialog .field{margin:15px 0}.dialogActions{display:flex;gap:9px;margin-top:14px}.dialogActions>*{flex:1}.loginMark{width:43px;height:43px;display:grid;place-items:center;border-radius:13px;margin-bottom:13px;background:linear-gradient(135deg,#258cff,#ff405d);font-weight:950;font-size:19px}.status{min-height:20px;margin-top:10px;font-size:13px;color:#ff9eae}.status.success{color:#8debc8}
+@media(max-width:720px){.adminGrid{grid-template-columns:1fr}.adminTop{align-items:flex-start}.hero{padding-top:23px}}@media(max-width:520px){.wrap{width:min(100% - 24px,1120px)}.nav{min-height:62px}.brand{font-size:18px}.hero{padding-top:17px}.heroBox{border-radius:19px}.searchrow{flex-direction:column}.sectionhead h2{font-size:21px}.grid{grid-template-columns:1fr 1fr;gap:10px}.cover{height:115px}.gamebody{padding:11px;gap:7px}.gamebody h3{font-size:15px}.desc{font-size:12px;min-height:52px}.gamefoot{align-items:flex-start;flex-direction:column}.gamefoot button{width:100%}.adminItem{align-items:flex-start;flex-direction:column}.adminItem .actions{width:100%}.adminItem .actions button{flex:1}.two{grid-template-columns:1fr}.adminState{font-size:10px;padding:6px 9px}}
+@media(max-width:360px){.grid{grid-template-columns:1fr}.cover{height:145px}}
 </style>
 </head>
 <body>
-<header class="top"><div class="wrap nav">
- <div class="navleft">
-  <div class="brand">DART'<span>z</span> PANEL</div>
-  <div class="accountWrap">
-   <button class="accountBtn hidden" id="accountBtn" type="button" aria-expanded="false">
-    <img class="avatar hidden" id="accountAvatar" alt="Avatar GitHub">
-    <span class="avatar" id="accountInitial">?</span>
-    <span class="accountText"><b class="accountName" id="accountName">Akun</b><small class="accountRole" id="accountRole">Belum login</small></span>
-    <span aria-hidden="true">⌄</span>
-   </button>
-   <div class="accountMenu hidden" id="accountMenu">
-    <button type="button" id="dashboardMenuBtn">Buka Dashboard Admin</button>
-    <button type="button" id="switchAccountBtn">Ganti / Login ulang</button>
-    <button type="button" class="menuDanger" id="accountLogoutBtn">Keluar dari akun</button>
-   </div>
-  </div>
- </div>
- <div class="navright"><button class="secondary" id="adminBtn">Admin Login</button></div>
-</div></header>
+<header class="top"><div class="wrap nav"><div class="brand">DART'<span>z</span> PANEL</div><div class="navright"><div id="adminState" class="adminState hidden"><span class="dot"></span> ADMIN AKTIF</div><button class="secondary" id="adminBtn">Admin</button></div></div></header>
 <main class="wrap">
-<section class="hero"><div class="heroBox"><div class="eyebrow">DART'z PANEL · GAME HUB</div><h1>PLAY YOUR<br>OWN WAY.</h1><p>Temukan dan download game pilihan dari DART'z Panel. Satu tempat untuk berbagai jenis game.</p><div class="searchrow"><input id="search" placeholder="Cari nama game..."><button id="searchBtn">Cari Game</button></div></div></section>
+<section class="hero"><div class="heroBox"><div class="eyebrow">DART'z PANEL · GAME HUB</div><h1>PLAY YOUR<br>OWN WAY.</h1><p>Temukan dan download game pilihan dari DART'z Panel. Satu tempat untuk berbagai jenis game.</p><div class="searchrow"><input id="search" placeholder="Cari nama game..." aria-label="Cari game"><button id="searchBtn">Cari Game</button></div></div></section>
 <div class="sectionhead"><div><div class="eyebrow">GAME LIBRARY</div><h2>Koleksi Game</h2></div><small class="muted" id="count">Memuat...</small></div>
-<div class="filters" id="filters">
-<button class="chip active" data-cat="Semua">Semua</button><button class="chip" data-cat="Action">Action</button><button class="chip" data-cat="Adventure">Adventure</button><button class="chip" data-cat="Horror">Horror</button><button class="chip" data-cat="Racing">Racing</button><button class="chip" data-cat="Other">Lainnya</button>
-</div>
+<div class="filters" id="filters"><button class="chip active" data-cat="Semua">Semua</button><button class="chip" data-cat="Action">Action</button><button class="chip" data-cat="Adventure">Adventure</button><button class="chip" data-cat="Horror">Horror</button><button class="chip" data-cat="Racing">Racing</button><button class="chip" data-cat="Other">Lainnya</button></div>
 <div id="games" class="grid"><div class="empty">Menghubungkan ke katalog game...</div></div>
 <section id="adminPanel" class="adminPanel hidden">
-<div class="sectionhead"><div><div class="eyebrow">CONTROL CENTER</div><h2>Dashboard DART'z Panel</h2></div><button class="secondary" id="logoutBtn">Keluar</button></div>
-<div class="status" id="adminStatus">Login admin berhasil.</div>
-<h3>Tambah Game</h3>
-<form id="gameForm">
-<div class="field"><label>Nama game *</label><input name="title" required maxlength="80" placeholder="Contoh: DART'z Adventure"></div>
-<div class="field"><label>Deskripsi</label><textarea name="description" maxlength="1000" placeholder="Ceritakan game ini..."></textarea></div>
-<div class="row"><div class="field"><label>Kategori</label><select name="category"><option>Action</option><option>Adventure</option><option>Horror</option><option>Racing</option><option>Simulation</option><option>Strategy</option><option>Other</option></select></div><div class="field"><label>Platform</label><select name="platform"><option>Android</option><option>Windows</option><option>Web</option><option>Linux</option><option>Multi-platform</option><option>Other</option></select></div></div>
-<div class="row"><div class="field"><label>Versi</label><input name="version" placeholder="1.0"></div><div class="field"><label>Label tambahan</label><input name="label" placeholder="Baru / Update"></div></div>
-<div class="field"><label>File game * (APK, ZIP, EXE, HTML, dll.)</label><input name="file" type="file" required></div>
-<div class="field"><label>Gambar cover (opsional)</label><input name="cover" type="file" accept="image/*"></div>
-<button type="submit" id="publishBtn">Upload & Publikasikan</button>
-</form>
-<h3 style="margin-top:25px">Kelola Game</h3><div class="adminGames" id="adminGames"></div>
+ <div class="adminTop"><div><div class="eyebrow">CONTROL CENTER</div><h2>Dashboard Admin</h2></div><button class="secondary" id="logoutBtn">Keluar</button></div>
+ <div class="adminGrid">
+  <div class="adminCard"><h3>Upload Game</h3>
+   <form id="gameForm">
+    <div class="field"><label>Nama game *</label><input name="title" required maxlength="80" placeholder="Contoh: Game Baru"></div>
+    <div class="field"><label>Deskripsi</label><textarea name="description" maxlength="1000" placeholder="Ceritakan game ini..."></textarea></div>
+    <div class="two"><div class="field"><label>Kategori</label><select name="category"><option>Action</option><option>Adventure</option><option>Horror</option><option>Racing</option><option>Simulation</option><option>Strategy</option><option>Other</option></select></div><div class="field"><label>Platform</label><select name="platform"><option>Android</option><option>Windows</option><option>Web</option><option>Linux</option><option>Multi-platform</option><option>Other</option></select></div></div>
+    <div class="two"><div class="field"><label>Versi</label><input name="version" placeholder="1.0"></div><div class="field"><label>Label tambahan</label><input name="label" placeholder="Baru / Update"></div></div>
+    <div class="field"><label>File game * (maksimal 50 MB)</label><input name="file" type="file" required></div>
+    <div class="field"><label>Cover (opsional, maksimal 5 MB)</label><input name="cover" type="file" accept="image/jpeg,image/png,image/webp,image/gif"></div>
+    <button type="submit" id="publishBtn" style="width:100%">Upload & Publikasikan</button>
+    <div class="status" id="uploadStatus" role="status"></div>
+   </form>
+  </div>
+  <div class="adminCard"><h3>Kelola Game</h3><div class="adminGames" id="adminGames"><div class="empty">Memuat game...</div></div></div>
+ </div>
 </section>
 </main>
 <footer><div class="wrap">© <span id="year"></span> DART'z Panel · Bagikan game dengan bijak dan pastikan lu punya hak untuk mendistribusikannya.</div></footer>
-
-<div class="modal hidden" id="loginModal"><div class="dialog"><h2>Admin Login</h2><p class="muted">Masuk menggunakan akun GitHub yang sudah diberi akses admin.</p><button type="button" id="githubLoginBtn" style="width:100%">🐙 Login dengan GitHub</button> <button type="button" class="secondary" id="closeLogin">Batal</button><div class="status hidden" id="loginStatus"></div></div></div>
+<div class="modal hidden" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle"><form class="dialog" id="loginForm"><div class="loginMark">D</div><h2 id="loginTitle">Admin Login</h2><p class="muted">Masukkan sandi untuk melanjutkan.</p><div class="field"><label for="adminPassword">Sandi</label><input id="adminPassword" type="password" autocomplete="current-password" required maxlength="256" placeholder="Masukkan sandi"></div><div class="dialogActions"><button type="submit" id="verifyBtn">Lanjut</button><button type="button" class="secondary" id="closeLogin">Batal</button></div><div id="loginStatus" class="status" role="status" aria-live="polite"></div></form></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-/* Gunakan Project URL dan Publishable/anon key. Jangan pernah masukkan service_role key. */
-const SUPABASE_URL = "https://wgmgmcwxbrauutyixngs.supabase.co";
-const SUPABASE_ANON_KEY = "sb_publishable_XZfm0-pTdwgk92DvEs5yyA_oBaiANvf";
-const FILE_BUCKET = "game-files";
-const COVER_BUCKET = "game-covers";
-let db = null, currentUser = null, isAdmin = false, allGames = [], activeCategory = "Semua";
-const $ = id => document.getElementById(id);
-$("year").textContent = new Date().getFullYear();
-
-function configured(){return SUPABASE_URL.startsWith("https://") && !SUPABASE_URL.includes("ISI_") && SUPABASE_ANON_KEY.length>20 && !SUPABASE_ANON_KEY.includes("ISI_")}
-function message(id,msg){$(id).textContent=msg;$(id).classList.remove("hidden")}
+// Publishable key boleh dipakai di browser. Jangan pernah masukkan secret/service-role key di sini.
+const SUPABASE_URL="https://wgmgmcwxbrauutyixngs.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY="sb_publishable_XZfm0-pTdwgk92DvEs5yyA_oBaiANvf";
+const ADMIN_FUNCTION_URL=SUPABASE_URL+"/functions/v1/dartz-admin";
+const TOKEN_SLOT="dartz_panel_admin_token";
+let db=null,allGames=[],activeCategory="Semua",challenge=null,adminToken=sessionStorage.getItem(TOKEN_SLOT)||"",isAdmin=false;
+const $=id=>document.getElementById(id);
+$("year").textContent=new Date().getFullYear();
 function safeText(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function setStatus(id,msg,success=false){$(id).textContent=msg;$(id).classList.toggle("success",success)}
 function showError(err){alert(err?.message||String(err))}
-function getUserName(user){
- const m=user?.user_metadata||{};
- return m.user_name||m.preferred_username||m.name||m.full_name||user?.email?.split("@")[0]||"GitHub User";
+async function adminCall(action,payload={},formData=false){
+ let body,headers={apikey:SUPABASE_PUBLISHABLE_KEY};
+ if(formData){body=payload;}
+ else{headers["Content-Type"]="application/json";body=JSON.stringify({action,...payload});}
+ const response=await fetch(ADMIN_FUNCTION_URL,{method:"POST",headers,body});
+ let data={};try{data=await response.json()}catch{}
+ if(!response.ok||data.error)throw new Error(data.error||"Permintaan gagal.");
+ return data;
 }
-function updateAccountUI(){
- const btn=$("accountBtn");
- if(!currentUser){btn.classList.add("hidden");$("accountMenu").classList.add("hidden");$("adminBtn").textContent="Admin Login";return}
- btn.classList.remove("hidden");
- const meta=currentUser.user_metadata||{};
- const name=getUserName(currentUser);
- const avatar=meta.avatar_url||meta.picture||"";
- $("accountName").textContent=name;
- $("accountRole").textContent=isAdmin?"ADMIN":"GITHUB ACCOUNT";
- $("accountInitial").textContent=(name.trim()[0]||"G").toUpperCase();
- if(avatar){
-  $("accountAvatar").src=avatar;
-  $("accountAvatar").classList.remove("hidden");
-  $("accountInitial").classList.add("hidden");
-  $("accountAvatar").onerror=()=>{$("accountAvatar").classList.add("hidden");$("accountInitial").classList.remove("hidden")};
- }else{
-  $("accountAvatar").classList.add("hidden");
-  $("accountInitial").classList.remove("hidden");
- }
- $("dashboardMenuBtn").classList.toggle("hidden",!isAdmin);
- $("adminBtn").textContent=isAdmin?"Dashboard":"Admin";
-}
-async function init(){
- if(!configured()){ $("games").innerHTML='<div class="empty">Website belum terhubung ke database. Periksa URL dan Publishable Key Supabase.</div>'; $("count").textContent="Belum dikonfigurasi"; return; }
- db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
- const {data:{session},error:sessionError}=await db.auth.getSession();
- if(sessionError)message("loginStatus","Gagal membaca sesi: "+sessionError.message);
- currentUser=session?.user||null;
- await checkAdmin();
- await loadGames();
- db.auth.onAuthStateChange((_event,session)=>{
-  currentUser=session?.user||null;
-  setTimeout(async()=>{
-   await checkAdmin();
-   await loadGames();
-   if(currentUser&&!isAdmin){
-    $("loginModal").classList.remove("hidden");
-    message("loginStatus","Login GitHub berhasil, tetapi akun ini belum terdaftar sebagai admin. Pastikan User ID akun ini sudah dimasukkan ke public.admins di Supabase.");
-   }else if(isAdmin){
-    $("loginModal").classList.add("hidden");
-    $("adminPanel").scrollIntoView({behavior:"smooth"});
-   }else{
-    $("loginModal").classList.add("hidden");
-   }
-  },0);
- });
- if(currentUser&&!isAdmin){
-  $("loginModal").classList.remove("hidden");
-  message("loginStatus","Akun GitHub berhasil masuk, tetapi belum terdeteksi sebagai admin. Periksa User ID di tabel public.admins.");
- }
-}
-async function checkAdmin(){
- isAdmin=false;
- if(currentUser){
-  const {data,error}=await db.from("admins").select("user_id").eq("user_id",currentUser.id).maybeSingle();
-  isAdmin=!!data&&!error;
-  if(error)message("adminStatus","Tidak bisa memeriksa akses admin: "+error.message);
- }
- $("adminPanel").classList.toggle("hidden",!isAdmin);
- updateAccountUI();
-}
+function setAdminMode(value){isAdmin=!!value;$("adminPanel").classList.toggle("hidden",!isAdmin);$("adminState").classList.toggle("hidden",!isAdmin);$("adminBtn").textContent=isAdmin?"Dashboard":"Admin";if(isAdmin)renderAdminGames()}
 async function loadGames(){
- if(!db)return;
  const {data,error}=await db.from("games").select("*").eq("published",true).order("created_at",{ascending:false});
- if(error){$("games").innerHTML='<div class="empty">Tidak dapat memuat game: '+safeText(error.message)+'</div>';return}
- allGames=data||[];renderGames();
- if(isAdmin)renderAdminGames();
+ if(error){$("games").innerHTML='<div class="empty">Katalog gagal dimuat: '+safeText(error.message)+'</div>';$ ("count").textContent="Error";return}
+ allGames=data||[];renderGames();if(isAdmin)renderAdminGames();
 }
 function renderGames(){
  const q=$("search").value.trim().toLowerCase();
- const list=allGames.filter(g=>(activeCategory==="Semua"||g.category===activeCategory)&&(!q||(g.title+" "+g.description+" "+g.platform).toLowerCase().includes(q)));
+ const list=allGames.filter(g=>(activeCategory==="Semua"||g.category===activeCategory)&&(!q||(String(g.title)+" "+String(g.description||"")+" "+String(g.platform||"")).toLowerCase().includes(q)));
  $("count").textContent=list.length+" game";
  if(!list.length){$("games").innerHTML='<div class="empty">Belum ada game di kategori ini.</div>';return}
- $("games").innerHTML=list.map(g=>`<article class="game">
- <div class="cover">${g.cover_url?`<img src="${safeText(g.cover_url)}" alt="Cover ${safeText(g.title)}" loading="lazy">`:"🎮"}</div>
- <div class="gamebody"><h3>${safeText(g.title)}</h3><div class="meta"><span class="tag">${safeText(g.category)}</span><span class="tag">${safeText(g.platform)}</span><span class="tag">v${safeText(g.version||"1.0")}</span></div>
- <div class="desc">${safeText(g.description||"Tidak ada deskripsi.")}</div><div class="gamefoot"><small>⬇ ${Number(g.downloads||0)} download</small><button onclick="downloadGame('${g.id}')">Download</button></div></div></article>`).join("");
+ $("games").innerHTML=list.map(g=>`<article class="game"><div class="cover">${g.cover_url?`<img src="${safeText(g.cover_url)}" alt="Cover ${safeText(g.title)}" loading="lazy">`:"🎮"}</div><div class="gamebody"><h3>${safeText(g.title)}</h3><div class="meta"><span class="tag">${safeText(g.category)}</span><span class="tag">${safeText(g.platform)}</span><span class="tag">v${safeText(g.version||"1.0")}</span></div><div class="desc">${safeText(g.description||"Tidak ada deskripsi.")}</div><div class="gamefoot"><small>⬇ ${Number(g.downloads||0)} download</small><button onclick="downloadGame('${safeText(g.id)}')">Download</button></div></div></article>`).join("");
 }
-async function downloadGame(id){
- const g=allGames.find(x=>x.id===id);if(!g)return;
- const {data,error}=await db.rpc("record_game_download",{game_id:id});
- if(error){showError(error);return}
- window.open(g.file_url,"_blank","noopener");
- await loadGames();
+async function downloadGame(id){const g=allGames.find(x=>String(x.id)===String(id));if(!g)return;const {error}=await db.rpc("record_game_download",{game_id:id});if(error){showError(error);return}window.open(g.file_url,"_blank","noopener");await loadGames()}
+function renderAdminGames(){
+ $("adminGames").innerHTML=allGames.length?allGames.map(g=>`<div class="adminItem"><div class="details"><b>${safeText(g.title)}</b><br><small>v${safeText(g.version||"1.0")} · ${Number(g.downloads||0)} download</small></div><div class="actions"><button class="secondary" onclick="editGame('${safeText(g.id)}')">Edit</button><button class="danger" onclick="deleteGame('${safeText(g.id)}')">Hapus</button></div></div>`).join(""):'<div class="empty">Belum ada game.</div>';
+}
+async function openLogin(){
+ $("loginModal").classList.remove("hidden");$("adminPassword").value="";setStatus("loginStatus","");challenge=null;
+ try{const data=await adminCall("begin");challenge=data.challenge;$("adminPassword").focus()}catch{setStatus("loginStatus","Gagal")}
+}
+async function logout(){
+ const old=adminToken;adminToken="";sessionStorage.removeItem(TOKEN_SLOT);setAdminMode(false);$("adminPanel").classList.add("hidden");
+ if(old){try{await adminCall("logout",{token:old})}catch{}}
+}
+async function editGame(id){
+ const g=allGames.find(x=>String(x.id)===String(id));if(!g)return;
+ const title=prompt("Nama game:",g.title);if(title===null)return;
+ const version=prompt("Versi:",g.version||"1.0");if(version===null)return;
+ const description=prompt("Deskripsi:",g.description||"");if(description===null)return;
+ try{await adminCall("editGame",{token:adminToken,id,title:title.trim(),version:version.trim(),description:description.trim()});await loadGames()}catch(err){showError(err)}
+}
+async function deleteGame(id){
+ const g=allGames.find(x=>String(x.id)===String(id));if(!g||!confirm("Hapus "+g.title+" dari katalog?"))return;
+ try{await adminCall("deleteGame",{token:adminToken,id});await loadGames()}catch(err){showError(err)}
 }
 $("filters").addEventListener("click",e=>{const b=e.target.closest("[data-cat]");if(!b)return;activeCategory=b.dataset.cat;document.querySelectorAll(".chip").forEach(x=>x.classList.toggle("active",x===b));renderGames()});
 $("search").addEventListener("input",renderGames);$("searchBtn").onclick=renderGames;
-$("adminBtn").onclick=()=>{if(isAdmin){$("adminPanel").scrollIntoView({behavior:"smooth"})}else{$("loginModal").classList.remove("hidden");$("loginStatus").classList.add("hidden")}};
-$("accountBtn").onclick=()=>{
- const menu=$("accountMenu"),open=menu.classList.contains("hidden");
- menu.classList.toggle("hidden",!open);
- $("accountBtn").setAttribute("aria-expanded",String(open));
+$("adminBtn").onclick=()=>{if(isAdmin)$("adminPanel").scrollIntoView({behavior:"smooth"});else openLogin()};
+$("closeLogin").onclick=()=>{$("loginModal").classList.add("hidden");challenge=null};
+$("loginModal").addEventListener("click",e=>{if(e.target===$("loginModal")){$("loginModal").classList.add("hidden");challenge=null}});
+$("loginForm").onsubmit=async e=>{
+ e.preventDefault();const btn=$("verifyBtn"),password=$("adminPassword").value;
+ if(!challenge){setStatus("loginStatus","Gagal");return}
+ btn.disabled=true;try{
+  const result=await adminCall("verify",{challenge,password});
+  $("adminPassword").value="";
+  if(result.done&&result.token){adminToken=result.token;sessionStorage.setItem(TOKEN_SLOT,adminToken);challenge=null;$("loginModal").classList.add("hidden");setStatus("loginStatus","");setAdminMode(true);await loadGames();$("adminPanel").scrollIntoView({behavior:"smooth"})}
+  else{$("adminPassword").focus()}
+ }catch{$("adminPassword").value="";setStatus("loginStatus","Gagal");$("adminPassword").focus()}
+ finally{btn.disabled=false}
 };
-document.addEventListener("click",e=>{
- if(!$("accountBtn").contains(e.target)&&!$("accountMenu").contains(e.target)){
-  $("accountMenu").classList.add("hidden");
-  $("accountBtn").setAttribute("aria-expanded","false");
- }
-});
-$("dashboardMenuBtn").onclick=()=>{$("accountMenu").classList.add("hidden");$("adminPanel").scrollIntoView({behavior:"smooth"})};
-$("switchAccountBtn").onclick=async()=>{
- $("accountMenu").classList.add("hidden");
- if(!db)return;
- const {error}=await db.auth.signOut();
- if(error){showError(error);return}
- currentUser=null;isAdmin=false;updateAccountUI();
- $("loginModal").classList.remove("hidden");
- $("loginStatus").classList.add("hidden");
- $("githubLoginBtn").disabled=false;
- $("githubLoginBtn").textContent="🐙 Login dengan GitHub";
-};
-async function logoutAccount(){
- if(!db)return;
- const {error}=await db.auth.signOut();
- if(error){showError(error);return}
- currentUser=null;isAdmin=false;
- $("accountMenu").classList.add("hidden");
- $("adminPanel").classList.add("hidden");
- $("loginModal").classList.add("hidden");
- updateAccountUI();
- $("githubLoginBtn").disabled=false;
- $("githubLoginBtn").textContent="🐙 Login dengan GitHub";
-}
-$("accountLogoutBtn").onclick=logoutAccount;
-$("logoutBtn").onclick=logoutAccount;
-$("closeLogin").onclick=()=>$("loginModal").classList.add("hidden");
-$("loginModal").addEventListener("click",e=>{if(e.target===$("loginModal"))$("loginModal").classList.add("hidden")});
-$("githubLoginBtn").onclick=async()=>{
- if(!db)return;
- const b=$("githubLoginBtn");b.disabled=true;b.textContent="Menghubungkan ke GitHub...";
- try{
-  const {error}=await db.auth.signInWithOAuth({provider:"github",options:{redirectTo:window.location.origin}});
-  if(error)throw error;
- }catch(err){
-  message("loginStatus","Login GitHub gagal: "+(err.message||String(err)));
-  b.disabled=false;b.textContent="🐙 Login dengan GitHub";
- }
-};
-async function uploadFile(bucket,file){
- const ext=(file.name.split(".").pop()||"bin").replace(/[^a-zA-Z0-9]/g,"").toLowerCase();
- const path=crypto.randomUUID()+"."+ext;
- const {error}=await db.storage.from(bucket).upload(path,file,{upsert:false,contentType:file.type||"application/octet-stream"});
- if(error)throw error;
- return db.storage.from(bucket).getPublicUrl(path).data.publicUrl;
-}
+$("logoutBtn").onclick=logout;
 $("gameForm").onsubmit=async e=>{
- e.preventDefault();if(!isAdmin)return;
- const f=new FormData(e.target),file=f.get("file"),cover=f.get("cover");
- if(!file||!file.size){alert("Pilih file game.");return}
- const btn=$("publishBtn");btn.disabled=true;btn.textContent="Mengupload...";
- try{
-  const fileUrl=await uploadFile(FILE_BUCKET,file);
-  const coverUrl=cover&&cover.size?await uploadFile(COVER_BUCKET,cover):null;
-  const {error}=await db.from("games").insert({title:f.get("title").trim(),description:f.get("description").trim(),category:f.get("category"),platform:f.get("platform"),version:f.get("version").trim()||"1.0",label:f.get("label").trim(),file_url:fileUrl,file_name:file.name,file_size:file.size,cover_url:coverUrl,published:true,created_by:currentUser.id});
-  if(error)throw error;
-  e.target.reset();$("adminStatus").textContent="Game berhasil dipublikasikan.";await loadGames();
- }catch(err){showError(err)}finally{btn.disabled=false;btn.textContent="Upload & Publikasikan"}
+ e.preventDefault();if(!isAdmin||!adminToken)return;
+ const form=e.currentTarget,fd=new FormData(form),file=fd.get("file"),cover=fd.get("cover");
+ if(!(file instanceof File)||!file.size){setStatus("uploadStatus","Pilih file game.");return}
+ const submit=$("publishBtn");submit.disabled=true;submit.textContent="Mengupload...";setStatus("uploadStatus","");
+ const payload=new FormData();payload.append("action","uploadGame");payload.append("token",adminToken);
+ for(const key of ["title","description","category","platform","version","label"])payload.append(key,String(fd.get(key)||""));
+ payload.append("file",file);if(cover instanceof File&&cover.size)payload.append("cover",cover);
+ try{await adminCall("uploadGame",payload,true);form.reset();setStatus("uploadStatus","Game berhasil dipublikasikan.",true);await loadGames()}
+ catch(err){setStatus("uploadStatus",err.message||"Upload gagal.")}
+ finally{submit.disabled=false;submit.textContent="Upload & Publikasikan"}
 };
-function renderAdminGames(){
- $("adminGames").innerHTML=allGames.length?allGames.map(g=>`<div class="adminItem"><span><b>${safeText(g.title)}</b><br><small class="muted">v${safeText(g.version||"1.0")} · ${Number(g.downloads||0)} download</small></span><span><button class="secondary" onclick="editGame('${g.id}')">Edit</button> <button class="danger" onclick="deleteGame('${g.id}')">Hapus</button></span></div>`).join(""):'<div class="empty">Belum ada game.</div>';
-}
-async function editGame(id){
- const g=allGames.find(x=>x.id===id);if(!g)return;
- const title=prompt("Nama game:",g.title);if(title===null)return;
- const version=prompt("Versi:",g.version||"1.0");if(version===null)return;
- const desc=prompt("Deskripsi:",g.description||"");if(desc===null)return;
- const {error}=await db.from("games").update({title:title.trim(),version:version.trim(),description:desc.trim()}).eq("id",id);
- if(error)showError(error);else await loadGames();
-}
-async function deleteGame(id){
- const g=allGames.find(x=>x.id===id);if(!g||!confirm("Hapus "+g.title+" dari katalog? File di storage tidak otomatis dihapus."))return;
- const {error}=await db.from("games").delete().eq("id",id);if(error)showError(error);else await loadGames();
+async function init(){
+ db=window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+ await loadGames();
+ if(adminToken){try{const result=await adminCall("check",{token:adminToken});if(result.ok){setAdminMode(true);await loadGames()}else{adminToken="";sessionStorage.removeItem(TOKEN_SLOT)}}catch{adminToken="";sessionStorage.removeItem(TOKEN_SLOT)}}
 }
 init();
 </script>
-</body></html>
+</body>
+</html>
